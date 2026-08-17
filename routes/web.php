@@ -1,9 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\DB;
+
 Route::get('/test-db', function () {
     try {
         DB::connection()->getPdo();
@@ -14,23 +15,13 @@ Route::get('/test-db', function () {
 });
 
 Route::get('/', function () {
-    return View("index");
+    return redirect()->route('products.index');
 });
 
-Route::get('/about', function () {
-    return View("about");
-});
+Route::get('/abouts', [AdminController::class, 'about'])->name('abouts');
 
-
-Route::get('/blog', function () {
-    return View("blog");
-});
-
-Route::get('/abouts',[AdminController::class,"about"] )->name("abouts");
-Route::get('/blogs',[AdminController::class,"blog"] )->name("blogs");
-Route::get('/create',[AdminController::class,"create"] )->name("create");
-Route::post('/insert',[AdminController::class,"insert"] )->name("insert");
-Route::get('blogs/delete/{id}', [AdminController::class, 'delete']);
-Route::get('/edit/{id}', [AdminController::class, 'edit'])->name('edit');
-Route::post('/update/{id}', [AdminController::class, 'update'])->name('update');
-Route::get('/change/{id}', [AdminController::class, 'change'])->name('change');
+// Product Management System Routes
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+Route::get('/product/change/{id}', [ProductController::class, 'changeStatus'])->name('products.change');
+Route::get('/product/edit/{id}', [ProductController::class, 'edit'])->name('products.edit');
+Route::post('/product/update/{id}', [ProductController::class, 'update'])->name('products.update');
